@@ -9,7 +9,7 @@ public interface PersonService {
 
 	Optional<Person> save(Person person);
 	
-	Optional<Person> finById(Long id);
+	Optional<Person> findById(Long id);
 	
 	List<Person> findAll();
 	

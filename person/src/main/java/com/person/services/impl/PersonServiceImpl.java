@@ -25,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Optional<Person> finById(Long id) {
+	public Optional<Person> findById(Long id) {
 		// TODO Auto-generated method stub	
 		return personRepository.findById(id);
 	}

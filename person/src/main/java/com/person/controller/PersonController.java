@@ -1,10 +1,9 @@
 package com.person.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,18 +31,19 @@ public class PersonController {
 		
 		Optional<Person> result = personService.save(person);
 		if (result.isPresent()) {
-			return ResponseEntity.ok(response("SUCCESS", true, result.get()));
+			return ResponseEntity.ok(result.get());
 		}
-		return ResponseEntity.ok(response("ERROR", false, null));
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail process save record");	
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> finById(@PathVariable Long id) {
-		Optional<Person> result = personService.finById(id);
-		if (result.isPresent()) {
-			return ResponseEntity.ok(response("SUCCESS", true, result.get()));
-		}
-		return ResponseEntity.ok(response("ERROR", false, null));
+	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+	    Optional<Person> result = personService.findById(id);
+
+	    if (result.isPresent()) {
+	        return ResponseEntity.ok(result.get());
+	    }
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No found record with id " + id);
 	}
 	
 	@GetMapping()
@@ -52,24 +52,16 @@ public class PersonController {
 		if (!result.isEmpty()) {
 			return ResponseEntity.ok(result);
 		}
-		return ResponseEntity.ok(response("ERROR", false, null));
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No found data");
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteById(Long id) {
+	public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
 		boolean isDelete = personService.deleteById(id);
 		if (isDelete) {
-			return ResponseEntity.ok(response("SUCCESS", true, null));
+			return ResponseEntity.ok("Registro eliminado con exito " +  id);
 		}
-		return ResponseEntity.ok(response("ERROR", false, null));
-	}
-	
-	private Map<String, String> response(String status, boolean message, Person person) {
-		Map<String, String> map = new HashMap<>();
-		map.put("status", status);
-		map.put("message", message ? "Ejecución exitosa" : "Fallo la Ejecución");
-		map.put("data", person != null ? person.toString() : "");
-		return map;
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail process delete record with id " + id);
 	}
 	
 }
