@@ -1,15 +1,30 @@
 pipeline {
-   agent any
+    agent any
+    parameters { // parametros iniciales
+        string(name:'apellido', description:'Ingrese apellido')
+        text(name:'biografia', description:'Ingrese biografia')
+        booleanParam(name:'encendido', description:'Parametro booleano')
+        choice(name:'ciudades', choices:['Cali', 'Neiva', 'Bogota', 'Buga'], description:'Seleccione una ciudad')
+        password(name:'password', description:'Ingrese contraseña')
+    }
+    environment { // variables de entorno local
+        LINKEDIN="https://www.linkedin.com/in/alexander-lozano-262b54a3/"
+    }
     stages {
-        stage('PASO NUMERO 1') {
+        stage('show enviroment local') {
             steps {
-                echo 'hola desde el paso umero 1 del github'
+                echo "echo $env.LINKEDIN"
+                echo "echo ${LINKEDIN}"
             }
         }
-        stage ('PASO NUMERO 1') {
+        stage('show data param') {
             steps {
-                echo 'hola desde el paso umero 2 del github'
+                echo "Apellido ${params.apellido}"
+                echo "Biografia ${params.biografia}"
+                echo "Encendido ${params.encendido}"
+                echo "Ciudad ${params.ciudades}"
+                echo "COntraseña ${params.password}"
             }
-        }
+        }       
     }
 }
