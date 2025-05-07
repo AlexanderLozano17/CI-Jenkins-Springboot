@@ -1,0 +1,15 @@
+pipeline {
+   agent any
+    stages {
+        stage('PASO NUMERO 1') {
+            steps {
+                echo 'hola desde el paso umero 1 del github'
+            }
+        }
+        stage ('PASO NUMERO 1') {
+            steps {
+                echo 'hola desde el paso umero 2 del github'
+            }
+        }
+    }
+}
